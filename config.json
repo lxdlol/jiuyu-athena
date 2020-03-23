@@ -1,0 +1,23 @@
+{
+  "dataSource": {
+    "driverName": "mongodb",
+    "host": "127.0.0.1",
+    "port": 27071,
+    "database": "athena",
+    "user": "root",
+    "password": ""
+  },
+  "kafka": {
+    "brokers": [
+      "localhost:9092"
+    ]
+  },
+  "pushServer": {
+    "addr": ":8002",
+    "path": "/ws"
+  },
+  "restServer": {
+    "addr": ":8001"
+  },
+  "jwtSecret": "cssdfkvkj#$%2@@#$dlfksd;sdfxgdgf"
+}
