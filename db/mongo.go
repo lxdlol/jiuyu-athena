@@ -12,13 +12,13 @@ var mgosess *mgo.Session
 
 //初始化链接
 func init() {
-	atheConfig := config.GetConfig()
+	athenaConfig := config.GetConfig()
 	dialinfo := mgo.DialInfo{
-		Addrs:     []string{atheConfig.DataSource.Host + ":" + strconv.Itoa(int(atheConfig.DataSource.Port))},
+		Addrs:     []string{athenaConfig.DataSource.Host + ":" + strconv.Itoa(int(athenaConfig.DataSource.Port))},
 		Timeout:   500 * time.Millisecond,
-		Username:  atheConfig.DataSource.User,
+		Username:  athenaConfig.DataSource.User,
 		Source:    "admin",
-		Password:  atheConfig.DataSource.Password,
+		Password:  athenaConfig.DataSource.Password,
 		PoolLimit: 100,
 	}
 	session, e := mgo.DialWithInfo(&dialinfo)
@@ -32,9 +32,9 @@ func init() {
 
 //copy链接选择数据库和表
 func Connect(collection string) (*mgo.Session, *mgo.Collection) {
-	atheConfig := config.GetConfig()
+	athenaConfig := config.GetConfig()
 	ms := mgosess.Copy()
-	c := ms.DB(atheConfig.DataSource.Database).C(collection)
+	c := ms.DB(athenaConfig.DataSource.Database).C(collection)
 	ms.SetMode(mgo.Monotonic, true)
 	return ms, c
 }
