@@ -41,7 +41,7 @@ type RestServerConfig struct {
 var config AthenaConfig
 var configOnce sync.Once
 
-func GetConfig() *GbeConfig {
+func GetConfig() *AthenaConfig {
 	configOnce.Do(func() {
 		bytes, err := ioutil.ReadFile("config.json")
 		if err != nil {
