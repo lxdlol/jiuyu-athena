@@ -16,13 +16,12 @@ type AthenaConfig struct {
 }
 
 type DataSourceConfig struct {
-	DriverName        string `json:"driverName"`
-	Host              string `json:"host"`
-	Port              int64  `json:"port"`
-	Database          string `json:"database"`
-	User              string `json:"user"`
-	Password          string `json:"password"`
-	EnableAutoMigrate bool   `json:"enableAutoMigrate"`
+	DriverName string `json:"driverName"`
+	Host       string `json:"host"`
+	Port       int64  `json:"port"`
+	Database   string `json:"database"`
+	User       string `json:"user"`
+	Password   string `json:"password"`
 }
 
 type KafkaConfig struct {
