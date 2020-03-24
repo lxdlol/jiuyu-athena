@@ -19,8 +19,8 @@ func AddPost(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"status": 200,
+		"status": 201,
 		"msg":    "success",
-		"data":   accounts,
+		"data":   nil,
 	})
 }
