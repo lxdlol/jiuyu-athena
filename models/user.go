@@ -18,6 +18,7 @@ type User struct {
 	IsMaster      bool   `json:"is_master" bson:"is_master"`           //是否是大咖
 	MasterRanking int64  `json:"master_ranking" bson:"master_ranking"` //大咖指数
 	Follows       int64  `json:"follows" bson:"follows"`               //关注数
+	InviteCode    string `json:"invite_code" bson:"invite_code"`       //
 }
 
 type Follow struct {

@@ -13,18 +13,24 @@ func swaggerRouter() {
 
 func authRouter() {
 	router := rest.InitRouter()
+	auth := router.Group("/auth")
 	//登录
-	router.POST("")
+	auth.POST("")
 	//注册
-	router.POST("")
+	auth.POST("")
 	//忘记密码
-	router.POST("")
+	auth.POST("")
 	//重设密码
-	router.POST("")
+	auth.POST("")
 	//退出登录
-	router.POST("")
+	auth.POST("")
 }
 
 func userRouter() {
-
+	router := rest.InitRouter()
+	user := router.Group("/user")
+	user.POST("/vip")
+	user.PUT("/vip")
+	user.DELETE("/vip")
+	user.GET("/vip")
 }

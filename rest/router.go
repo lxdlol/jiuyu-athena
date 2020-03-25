@@ -10,5 +10,6 @@ func InitRouter() *gin.Engine {
 	if Router == nil {
 		Router = gin.Default()
 	}
+	SetPostRouter(Router)
 	return Router
 }

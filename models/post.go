@@ -5,6 +5,7 @@
 package models
 
 import (
+	"athena/db"
 	"gopkg.in/mgo.v2/bson"
 	"time"
 )
@@ -20,12 +21,14 @@ type Topic struct {
 }
 
 type Post struct {
-	Id      bson.ObjectId `json:"id" bson:"_id"`
-	Title   string        `json:"title" bson:"title"`
-	Content string        `json:"content" bson:"content"` //required
-	Topic   Topic         `json:"topic" bson:"topic"`     //required
-	Tags    []string      `json:"tags" bson:"tags"`
-	User    User          `json:"user" bson:"user"` //required
+	Id       bson.ObjectId `json:"id" bson:"_id"`
+	Title    string        `json:"title" bson:"title"`
+	Images   []string      `json:"images" bson:"images"`
+	Content  string        `json:"content" bson:"content"`   //required
+	Comments []Comment     `json:"comments" bson:"comments"` //评论
+	Topic    Topic         `json:"topic" bson:"topic"`       //required
+	Tags     []string      `json:"tags" bson:"tags"`
+	User     User          `json:"user" bson:"user"` //required,发布人
 
 	Views   int64 `json:"views" bson:"views"`     //阅读数
 	Flowers int64 `json:"flowers" bson:"flowers"` //鲜花数
@@ -34,14 +37,6 @@ type Post struct {
 	CreatedAt time.Time `json:"created_at" bson:"created_at"` //required
 	UpdatedAt time.Time `json:"updated_at" bson:"updated_at"` //required
 
-}
-
-/*
-	用户是否有查看权限
-*/
-
-func (c *Post) HasViewPermission(user User) (error, bool) {
-	return nil, true
 }
 
 type Comment struct {
@@ -57,6 +52,67 @@ type Comment struct {
 type Tag struct {
 	Name   string `json:"name" bson:"Name"`
 	Number int64  `json:"number" bson:"number"` //内容数量
+}
+
+type GalleyGroup struct {
+	Name   string       `json:"name" bson:"name"`
+	Parent *GalleyGroup `json:"parent" bson:"parent"`
+}
+
+type Gallery struct {
+	Group    GalleyGroup `json:"group" bson:"group"`
+	Name     string      `json:"name" bson:"name"`
+	FilePath string      `json:"file_path" bson:"file_path"`
+}
+
+func InsertPost(post Post) error {
+	_, c := db.Connect("post")
+	err := c.Insert(post)
+	return err
+}
+
+func DeletePost(post Post) error {
+	return nil
+}
+
+func (c *Post) Update() error {
+	_, collect := db.Connect("post")
+	err := collect.UpdateId(c.Id, c)
+	return err
+}
+func (c *Post) InsertComment(comment Comment) error {
+	comments := append(c.Comments, comment)
+	c.Comments = comments
+	return c.Update()
+}
+
+/*
+丢鸡蛋
+*/
+func (c *Post) DoEgg() error {
+	c.Eggs = c.Eggs + 1
+	return c.Update()
+}
+
+/*
+点赞
+*/
+func (c *Post) DoFlower() error {
+	c.Flowers = c.Flowers + 1
+	return c.Update()
+}
+
+func (c *Post) DoView() error {
+	c.Views = c.Views + 1
+	return c.Update()
+}
+
+/*
+	用户是否有查看权限
+*/
+
+func (c *Post) HasViewPermission(user User) (error, bool) {
+	return nil, true
 }
 
 /*
