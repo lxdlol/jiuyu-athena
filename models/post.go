@@ -10,6 +10,13 @@ import (
 	"time"
 )
 
+type PostType int32
+
+const (
+	Message PostType = 0
+	Event   PostType = 1
+)
+
 type Topic struct {
 	Id      bson.ObjectId `json:"id" bson:"_id"`
 	Name    string        `json:"name" bson:"name"`       //required
@@ -20,9 +27,12 @@ type Topic struct {
 	UpdatedAt time.Time `json:"updated_at" bson:"updated_at"` //required
 }
 
+/*
+文章,博客,动态
+*/
 type Post struct {
 	Id       bson.ObjectId `json:"id" bson:"_id"`
-	Title    string        `json:"title" bson:"title"`
+	Type     PostType      `json:"type" bson:'type'` //1.message, 2.event
 	Images   []string      `json:"images" bson:"images"`
 	Content  string        `json:"content" bson:"content"`   //required
 	Comments []Comment     `json:"comments" bson:"comments"` //评论
