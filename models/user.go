@@ -12,6 +12,7 @@ type User struct {
 	Uid           string `json:"uid" bson:"uid"` //用户全局ID
 	NickName      string `json:"nick_name" bson:"nick_name"`
 	Level         Level  `json:"level" bson:"level"` //用户等级
+	Avatar        string `json:"avatar" bson:"avatar"`
 	City          string `json:"city" bson:"city"`
 	IsGuru        bool   `json:"is_guru" bson:"is_guru"`               //是否是达人
 	GuruRanking   int64  `json:"guru_ranking" json:"guru_ranking"`     //达人指数
