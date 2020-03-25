@@ -13,6 +13,7 @@ func InitRouter() *gin.Engine {
 		Router = gin.Default()
 	}
 
+	// TODO: 依赖注入
 	SetPostRouter(Router)
 	router.SetObjectRouter(Router, authRouter())
 
