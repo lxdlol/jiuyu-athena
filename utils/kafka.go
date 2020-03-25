@@ -1,7 +1,10 @@
 package utils
 
-import "time"
-import "github.com/segmentio/kafka-go"
+import (
+	"time"
+
+	"github.com/segmentio/kafka-go"
+)
 
 type KafkaReader struct {
 	reader *kafka.Reader
