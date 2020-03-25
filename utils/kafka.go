@@ -1,7 +1,10 @@
 package utils
 
-import "time"
-import "github.com/segmentio/kafka-go"
+import (
+	"time"
+
+	"github.com/segmentio/kafka-go"
+)
 
 type KafkaReader struct {
 	reader *kafka.Reader
@@ -18,7 +21,7 @@ func GetKafkaReader(topic string, brokers []string) *KafkaReader {
 	if kafkaReader == nil {
 		kafkaReader := &KafkaReader{}
 
-		kafkaReader.writer = kafka.NewReader(kafka.ReaderConfig{
+		kafkaReader.reader = kafka.NewReader(kafka.ReaderConfig{
 			Brokers:   brokers,
 			Topic:     topic,
 			Partition: 0,
