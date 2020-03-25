@@ -6,12 +6,7 @@ import (
 )
 
 func SetPostRouter(r *gin.Engine) {
-	post := r.Group("/post", gin.BasicAuth(gin.Accounts{
-		"foo":    "bar",
-		"austin": "1234",
-		"lena":   "hello2",
-		"manu":   "4321",
-	}))
+	post := r.Group("/post")
 	post.POST("/", post2.AddPost)
 	post.DELETE("/:id", func(context *gin.Context) {
 
