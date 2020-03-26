@@ -26,15 +26,15 @@ func init() {
 	r = &gRouter{
 		Engine: gin.Default(),
 		rSlice: []interface{}{
-			object.NewObjectRouter(),
-			post.NewPostRouter(),
-			user.NewUserRouter(),
+			object.NewRouter(),
+			post.NewRouter(),
+			user.NewRouter(),
 		},
 	}
 }
 
 func InitRouter() *gin.Engine {
-	// TODO: 依赖注入
+	// 依赖注入 类继承检查
 	if len(r.rSlice) > 0 {
 		for _, v := range r.rSlice {
 			if node, ok := v.(routerObj); ok {

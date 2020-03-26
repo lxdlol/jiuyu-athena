@@ -7,8 +7,8 @@ import (
 // rObject
 type rObject struct{}
 
-// NewUserRouter 初始化项目路由
-func NewUserRouter() *rObject {
+// NewRouter 初始化项目路由
+func NewRouter() *rObject {
 	return new(rObject)
 }
 
@@ -19,24 +19,30 @@ func (o *rObject) Set(r *gin.Engine, auth gin.HandlerFunc) {
 }
 
 func (o *rObject) authRouter(r *gin.Engine) {
-	auth := r.Group("/auth")
-	//登录
-	auth.POST("/login")
-	//注册
-	auth.POST("/register")
-	//忘记密码
-	auth.POST("/forget-password")
-	//重设密码
-	auth.POST("/reset-password")
-	//退出登录
-	auth.POST("/exit")
+	router := r.Group("/auth")
+	{
+		//登录
+		router.POST("/login")
+		//注册
+		router.POST("/register")
+		//忘记密码
+		router.POST("/forget-password")
+		//重设密码
+		router.POST("/reset-password")
+		//退出登录
+		router.POST("/exit")
+	}
+
 }
 
 func (o *rObject) userRouter(r *gin.Engine) {
-	user := r.Group("/user")
-	//vip等级增删改查
-	user.POST("/vip")
-	user.PUT("/vip")
-	user.DELETE("/vip")
-	user.GET("/vip")
+	router := r.Group("/user")
+	{
+		//vip等级增删改查
+		router.POST("/vip")
+		router.PUT("/vip")
+		router.DELETE("/vip")
+		router.GET("/vip")
+	}
+
 }

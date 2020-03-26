@@ -8,46 +8,26 @@ import (
 // rObject
 type rObject struct{}
 
-// NewObjectRouter 初始化项目路由
-func NewPostRouter() *rObject {
+// NewRouter 初始化项目路由
+func NewRouter() *rObject {
 	return new(rObject)
 }
 
-// SetObjectRouter 设置项目路由
+// Set 设置项目路由
 func (o *rObject) Set(r *gin.Engine, auth gin.HandlerFunc) {
-	post := r.Group("/post")
-	post.POST("/", post2.AddPost)
-	post.DELETE("/:id", func(context *gin.Context) {
-
-	})
-	post.PUT("/:id", func(context *gin.Context) {
-
-	})
-	post.GET("/:id", func(context *gin.Context) {
-
-	})
-
-	post.POST("/:id/comment", func(context *gin.Context) {
-
-	})
-
-	post.DELETE("/:id/comment/:commentId", func(context *gin.Context) {
-
-	})
-
-	post.POST("/:id/flower", func(context *gin.Context) {
-
-	})
-	post.POST("/:id/egg", func(context *gin.Context) {
-
-	})
-
-	//收藏，关注
-	post.POST("/:id/favorite", func(context *gin.Context) {
-
-	})
-	post.DELETE("/:id/favorite", func(context *gin.Context) {
-
-	})
+	router := r.Group("/post")
+	{
+		router.POST("/", post2.AddPost)
+		router.DELETE("/:id", func(context *gin.Context) {})
+		router.PUT("/:id", func(context *gin.Context) {})
+		router.GET("/:id", func(context *gin.Context) {})
+		router.POST("/:id/comment", func(context *gin.Context) {})
+		router.DELETE("/:id/comment/:commentId", func(context *gin.Context) {})
+		router.POST("/:id/flower", func(context *gin.Context) {})
+		router.POST("/:id/egg", func(context *gin.Context) {})
+		//收藏，关注
+		router.POST("/:id/favorite", func(context *gin.Context) {})
+		router.DELETE("/:id/favorite", func(context *gin.Context) {})
+	}
 
 }
