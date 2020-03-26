@@ -9,6 +9,8 @@ var ErrCodeMap = map[int]string{
 	403:   "没有访问权限",
 	500:   "服务端出错",
 	10001: "密码长度错误",
+	10002: "用户名不合法",
+	10003: "推荐吗错误",
 }
 
 func ErrCode(code int) *ResponseData {

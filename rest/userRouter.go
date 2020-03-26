@@ -1,11 +1,7 @@
-package router
+package rest
 
-import (
-	"athena/rest"
-)
-
-func authRouter() {
-	router := rest.InitRouter()
+func AuthRouter() {
+	router := InitRouter()
 	auth := router.Group("/auth")
 	//登录
 	auth.POST("/login")
@@ -19,8 +15,8 @@ func authRouter() {
 	auth.POST("/exit")
 }
 
-func userRouter() {
-	router := rest.InitRouter()
+func UserRouter() {
+	router := InitRouter()
 	user := router.Group("/user")
 	//vip等级增删改查
 	user.POST("/vip")

@@ -2,42 +2,51 @@ package handler
 
 import (
 	"athena/common"
+	"athena/models"
+	"athena/utils"
 	"github.com/gin-gonic/gin"
-	"strings"
 )
 
+//登录
 func Login(c *gin.Context) {
 	var p UserParam
 	if e := c.ShouldBind(&p); e != nil {
 		common.NewErrorResponse(c, 400, "数据格式错误", nil)
 		return
 	}
-	pwd := strings.Replace(p.PassWord, " ", "", -1)
-	//判断pwd
-	if len(pwd) < 6 || len(pwd) > 20 {
-		common.NewErrorResponse(c, 10001, "密码长度错误", nil)
+	if !utils.Rightful(p.PassWord, 6, 20) {
+		common.NewResponse(c, common.ErrCode(10001))
 		return
 	}
-	username := strings.Replace(p.UserName, " ", "", -1)
+	if !utils.Rightful(p.UserName, 1, 20) {
+		common.NewResponse(c, common.ErrCode(10002))
+		return
+	}
 
 }
 
+//注册
 func Register(c *gin.Context) {
 	var p UserParam
 	if e := c.ShouldBind(&p); e != nil {
 		common.NewErrorResponse(c, 400, "数据格式错误", nil)
 		return
 	}
-	pwd := strings.Replace(p.PassWord, " ", "", -1)
-	//判断pwd
-	if len(pwd) < 6 || len(pwd) > 20 {
-		common.NewErrorResponse(c, 10001, "密码长度错误", nil)
+	//检验数据正确
+	if !utils.Rightful(p.PassWord, 6, 20) {
+		common.NewResponse(c, common.ErrCode(10001))
 		return
 	}
-	username := strings.Replace(p.UserName, " ", "", -1)
-	if username == "" {
-		common.NewErrorResponse(c, 400, "数据格式错误", nil)
+	if !utils.Rightful(p.UserName, 1, 20) {
+		common.NewResponse(c, common.ErrCode(10002))
 		return
+	}
+	//检验推荐码是否正确
+	if p.RCode != "" {
+		if _, e := models.FindByFilter("r_code", p.RCode); e != nil {
+			common.NewResponse(c, common.ErrCode(10003))
+			return
+		}
 	}
 
 }
