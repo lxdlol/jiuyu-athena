@@ -9,34 +9,34 @@ import (
 func Login(c *gin.Context) {
 	var p UserParam
 	if e := c.ShouldBind(&p); e != nil {
-		common.NewErrorResponse(c, 400, "数据格式错误", nil)
+		common.GResp.Failure(c, common.CodeIllegalParam)
 		return
 	}
 	pwd := strings.Replace(p.PassWord, " ", "", -1)
 	//判断pwd
 	if len(pwd) < 6 || len(pwd) > 20 {
-		common.NewErrorResponse(c, 10001, "密码长度错误", nil)
+		common.GResp.Failure(c, common.CodeIllegalPwdLength)
 		return
 	}
-	username := strings.Replace(p.UserName, " ", "", -1)
+	//username := strings.Replace(p.UserName, " ", "", -1)
 
 }
 
 func Register(c *gin.Context) {
 	var p UserParam
 	if e := c.ShouldBind(&p); e != nil {
-		common.NewErrorResponse(c, 400, "数据格式错误", nil)
+		common.GResp.Failure(c, common.CodeIllegalParam)
 		return
 	}
 	pwd := strings.Replace(p.PassWord, " ", "", -1)
 	//判断pwd
 	if len(pwd) < 6 || len(pwd) > 20 {
-		common.NewErrorResponse(c, 10001, "密码长度错误", nil)
+		common.GResp.Failure(c, common.CodeIllegalPwdLength)
 		return
 	}
 	username := strings.Replace(p.UserName, " ", "", -1)
 	if username == "" {
-		common.NewErrorResponse(c, 400, "数据格式错误", nil)
+		common.GResp.Failure(c, common.CodeIllegalParam)
 		return
 	}
 

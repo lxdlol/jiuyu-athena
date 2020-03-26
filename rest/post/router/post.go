@@ -1,17 +1,21 @@
-package rest
+package router
 
 import (
 	post2 "athena/rest/post"
 	"github.com/gin-gonic/gin"
 )
 
-func SetEventRouter(r *gin.Engine) {
-	post := r.Group("/post", gin.BasicAuth(gin.Accounts{
-		"foo":    "bar",
-		"austin": "1234",
-		"lena":   "hello2",
-		"manu":   "4321",
-	}))
+// rObject
+type rObject struct{}
+
+// NewObjectRouter 初始化项目路由
+func NewPostRouter() *rObject {
+	return new(rObject)
+}
+
+// SetObjectRouter 设置项目路由
+func (o *rObject) Set(r *gin.Engine, auth gin.HandlerFunc) {
+	post := r.Group("/post")
 	post.POST("/", post2.AddPost)
 	post.DELETE("/:id", func(context *gin.Context) {
 
