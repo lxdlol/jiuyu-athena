@@ -2,6 +2,11 @@ package handler
 
 import "github.com/gin-gonic/gin"
 
+type APIError struct {
+	ErrorCode    int
+	ErrorMessage string
+}
+
 // @Summary 获取首页
 // @Description get string by ID
 // @Accept  json
