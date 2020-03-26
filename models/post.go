@@ -51,6 +51,7 @@ type Post struct {
 
 // Comment  评论
 type Comment struct {
+	CId       int       `json:"id" bson:"c_id"`
 	Content   string    `json:"content" bson:"content"`
 	User      User      `json:"user" bson:"user"`
 	Flowers   int64     `json:"flowers" bson:"flowers"` //鲜花数
