@@ -7,8 +7,8 @@ import (
 )
 
 type AthenaConfig struct {
+	RunMode    string           `json:"runMode"`
 	DataSource DataSourceConfig `json:"dataSource"`
-
 	Kafka      KafkaConfig      `json:"kafka"`
 	PushServer PushServerConfig `json:"pushServer"`
 	RestServer RestServerConfig `json:"restServer"`

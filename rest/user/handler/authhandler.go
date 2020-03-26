@@ -2,16 +2,14 @@ package handler
 
 import (
 	"athena/common"
-	"athena/models"
-	"athena/utils"
 	"github.com/gin-gonic/gin"
+	"strings"
 )
 
-//登录
 func Login(c *gin.Context) {
 	var p UserParam
 	if e := c.ShouldBind(&p); e != nil {
-		common.NewErrorResponse(c, 400, "数据格式错误", nil)
+		common.GResp.Failure(c, common.CodeIllegalParam)
 		return
 	}
 	if !utils.Rightful(p.PassWord, 6, 20) {
@@ -29,7 +27,7 @@ func Login(c *gin.Context) {
 func Register(c *gin.Context) {
 	var p UserParam
 	if e := c.ShouldBind(&p); e != nil {
-		common.NewErrorResponse(c, 400, "数据格式错误", nil)
+		common.GResp.Failure(c, common.CodeIllegalParam)
 		return
 	}
 	//检验数据正确

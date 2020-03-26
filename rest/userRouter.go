@@ -1,26 +1,48 @@
-package rest
+package router
 
-func AuthRouter() {
-	router := InitRouter()
-	auth := router.Group("/auth")
-	//登录
-	auth.POST("/login")
-	//注册
-	auth.POST("/register")
-	//忘记密码
-	auth.POST("/forget-password")
-	//重设密码
-	auth.POST("/reset-password")
-	//退出登录
-	auth.POST("/exit")
+import (
+	"github.com/gin-gonic/gin"
+)
+
+// rObject
+type rObject struct{}
+
+// NewRouter 初始化项目路由
+func NewRouter() *rObject {
+	return new(rObject)
 }
 
-func UserRouter() {
-	router := InitRouter()
-	user := router.Group("/user")
-	//vip等级增删改查
-	user.POST("/vip")
-	user.PUT("/vip")
-	user.DELETE("/vip")
-	user.GET("/vip")
+// SetObjectRouter 设置项目路由
+func (o *rObject) Set(r *gin.Engine, auth gin.HandlerFunc) {
+	o.authRouter(r)
+	o.userRouter(r)
+}
+
+func (o *rObject) authRouter(r *gin.Engine) {
+	router := r.Group("/auth")
+	{
+		//登录
+		router.POST("/login")
+		//注册
+		router.POST("/register")
+		//忘记密码
+		router.POST("/forget-password")
+		//重设密码
+		router.POST("/reset-password")
+		//退出登录
+		router.POST("/exit")
+	}
+
+}
+
+func (o *rObject) userRouter(r *gin.Engine) {
+	router := r.Group("/user")
+	{
+		//vip等级增删改查
+		router.POST("/vip")
+		router.PUT("/vip")
+		router.DELETE("/vip")
+		router.GET("/vip")
+	}
+
 }
