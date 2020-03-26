@@ -35,8 +35,6 @@ func init() {
 
 func InitRouter() *gin.Engine {
 	// TODO: 依赖注入
-	//rest.SetPostRouter(r.Engine)
-	//router.SetObjectRouter(Router, authBaseRouter())
 	if len(r.rSlice) > 0 {
 		for _, v := range r.rSlice {
 			if node, ok := v.(routerObj); ok {
