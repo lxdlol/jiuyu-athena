@@ -51,16 +51,16 @@ type Post struct {
 
 // Comment  评论
 type Comment struct {
-	CId       int       `json:"id" bson:"c_id"`
-	Content   string    `json:"content" bson:"content"`
-	User      User      `json:"user" bson:"user"`
-	Flowers   int64     `json:"flowers" bson:"flowers"` //鲜花数
-	Eggs      int64     `json:"eggs" bson:"eggs"`       //鸡蛋数
-	CreatedAt time.Time `json:"created_at" bson:"created_at"`
+	Id        bson.ObjectId `json:"id" bson:"id"`
+	Content   string        `json:"content" bson:"content"`
+	User      User          `json:"user" bson:"user"`
+	Flowers   int64         `json:"flowers" bson:"flowers"` //鲜花数
+	Eggs      int64         `json:"eggs" bson:"eggs"`       //鸡蛋数
+	CreatedAt time.Time     `json:"created_at" bson:"created_at"`
 }
 
 type Tag struct {
-	Name   string `json:"name" bson:"Name"`
+	Name   string `json:"name" bson:"Name"`     //unique
 	Number int64  `json:"number" bson:"number"` //内容数量
 }
 
