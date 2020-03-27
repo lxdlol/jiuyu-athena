@@ -24,7 +24,7 @@ func CommentAddOrReduce(conn *mgo.Collection, p models.Post, action string, comm
 		}
 		return nil
 	case "-":
-		arr := BinarySearch(p.Comments, comment.CId)
+		arr := BinarySearch(p.Comments, comment.Id)
 		bsonobj := bson.M{"$set": &bson.M{"comments": arr}}
 		if err := conn.Update(&bsonid, &bsonobj); err != nil {
 			return err
@@ -40,14 +40,14 @@ func FabulousAddOrReduce(conn *mgo.Collection, p models.Post, action string, com
 
 	switch action {
 	case "+":
-		arr := BinarySearchFabulous(p.Comments, comment.CId, "+")
+		arr := BinarySearchFabulous(p.Comments, comment.Id, "+")
 		bsonobj := bson.M{"$set": &bson.M{"comments": arr}}
 		if err := conn.Update(&bsonid, &bsonobj); err != nil {
 			return err
 		}
 		return nil
 	case "-":
-		arr := BinarySearchFabulous(p.Comments, comment.CId, "-")
+		arr := BinarySearchFabulous(p.Comments, comment.Id, "-")
 		bsonobj := bson.M{"$set": &bson.M{"comments": arr}}
 		if err := conn.Update(&bsonid, &bsonobj); err != nil {
 			return err
@@ -62,14 +62,14 @@ func StepOnAddOrReduce(conn *mgo.Collection, p models.Post, action string, comme
 
 	switch action {
 	case "+":
-		arr := BinarySearchFabulous(p.Comments, comment.CId, "+")
+		arr := BinarySearchFabulous(p.Comments, comment.Id, "+")
 		bsonobj := bson.M{"$set": &bson.M{"comments": arr}}
 		if err := conn.Update(&bsonid, &bsonobj); err != nil {
 			return err
 		}
 		return nil
 	case "-":
-		arr := BinarySearchFabulous(p.Comments, comment.CId, "-")
+		arr := BinarySearchFabulous(p.Comments, comment.Id, "-")
 		bsonobj := bson.M{"$set": &bson.M{"comments": arr}}
 		if err := conn.Update(&bsonid, &bsonobj); err != nil {
 			return err
@@ -79,7 +79,7 @@ func StepOnAddOrReduce(conn *mgo.Collection, p models.Post, action string, comme
 }
 
 // 二分查找 跟新一个评论的踩数量
-func BinarySearchStepOn(arr []models.Comment, target int, action string) []models.Comment {
+func BinarySearchStepOn(arr []models.Comment, target bson.ObjectId, action string) []models.Comment {
 	//变量l,r的意义是：从[l......r]区间内查找target的数的下标
 	l, r := 0, len(arr)-1
 	arr_index := 0
@@ -87,12 +87,12 @@ func BinarySearchStepOn(arr []models.Comment, target int, action string) []model
 	for l <= r {
 		mid := (l + r) / 2
 		//正好是中位数
-		if target == arr[mid].CId {
+		if target == arr[mid].Id {
 			arr_index = mid
 			break
 		}
 		//在右区间查找
-		if target > arr[mid].CId {
+		if target > arr[mid].Id {
 			l = mid + 1
 		} else { //在左区间查找
 			r = mid - 1
@@ -112,7 +112,7 @@ func BinarySearchStepOn(arr []models.Comment, target int, action string) []model
 }
 
 // 二分查找 跟新一个评论的点赞数量
-func BinarySearchFabulous(arr []models.Comment, target int, action string) []models.Comment {
+func BinarySearchFabulous(arr []models.Comment, target bson.ObjectId, action string) []models.Comment {
 	//变量l,r的意义是：从[l......r]区间内查找target的数的下标
 	l, r := 0, len(arr)-1
 	arr_index := 0
@@ -120,12 +120,12 @@ func BinarySearchFabulous(arr []models.Comment, target int, action string) []mod
 	for l <= r {
 		mid := (l + r) / 2
 		//正好是中位数
-		if target == arr[mid].CId {
+		if target == arr[mid].Id {
 			arr_index = mid
 			break
 		}
 		//在右区间查找
-		if target > arr[mid].CId {
+		if target > arr[mid].Id {
 			l = mid + 1
 		} else { //在左区间查找
 			r = mid - 1
@@ -145,7 +145,7 @@ func BinarySearchFabulous(arr []models.Comment, target int, action string) []mod
 }
 
 // 二分查找 删除一个 评论
-func BinarySearch(arr []models.Comment, target int) []models.Comment {
+func BinarySearch(arr []models.Comment, target bson.ObjectId) []models.Comment {
 	//变量l,r的意义是：从[l......r]区间内查找target的数的下标
 	l, r := 0, len(arr)-1
 	arr_index := 0
@@ -153,12 +153,12 @@ func BinarySearch(arr []models.Comment, target int) []models.Comment {
 	for l <= r {
 		mid := (l + r) / 2
 		//正好是中位数
-		if target == arr[mid].CId {
+		if target == arr[mid].Id {
 			arr_index = mid
 			break
 		}
 		//在右区间查找
-		if target > arr[mid].CId {
+		if target > arr[mid].Id {
 			l = mid + 1
 		} else { //在左区间查找
 			r = mid - 1

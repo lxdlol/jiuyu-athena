@@ -1,8 +1,10 @@
 package models
 
 import (
+	"athena/db"
 	"crypto/sha256"
 	"fmt"
+	"gopkg.in/mgo.v2/bson"
 	"strconv"
 	"time"
 )
@@ -51,8 +53,20 @@ func Hash256(pwd, salt string) string {
 	return fmt.Sprintf("%x", hs)
 }
 
-func FindByFilter(filter interface{}) {
+//条件查询
+func (u User) FindByFilter(filter string, value interface{}) (User, error) {
+	s, c := db.Connect("user")
+	defer s.Close()
+	var user User
+	err := c.Find(bson.M{filter: value}).One(&user)
+	return user, err
+}
 
+func (u User) Insert() error {
+	s, c := db.Connect("user")
+	defer s.Close()
+	insert := c.Insert(&u)
+	return insert
 }
 
 type Follow struct {
