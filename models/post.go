@@ -11,10 +11,21 @@ import (
 )
 
 type PostType int32
+type PostEventType int32
 
 const (
 	Message PostType = 0
 	Event   PostType = 1
+)
+
+const (
+	UploadReport      PostEventType = 0 //上传报告
+	AddReportComment  PostEventType = 1 //添加
+	AddProject        PostEventType = 2 //系统发布(推送)的消息
+	AddProjectComment PostEventType = 3 //项目评论
+	NewMaster         PostEventType = 4 //晋升大咖
+	NewGuru           PostEventType = 5 //晋升达人
+
 )
 
 type Topic struct {
