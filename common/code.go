@@ -35,6 +35,10 @@ const (
 	CodeRCodeError StatusCode = 10003
 	//用户名已存在
 	CodeIsExist StatusCode = 10004
+	//数据库插入失败
+	CodeDbInsertError StatusCode = 10005
+	//用户名错误
+	CodePasswordError StatusCode = 10006
 )
 
 // Error 实现error接口
@@ -66,5 +70,7 @@ func init() {
 		CodeIllegalPwdLength:    "密码长度错误",
 		CodeUserError:           "用户名错误",
 		CodeIsExist:             "用户名已存在",
+		CodeDbInsertError:       "数据库插入失败",
+		CodePasswordError:       "密码错误",
 	}
 }

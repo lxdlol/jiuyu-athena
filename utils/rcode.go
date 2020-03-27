@@ -2,11 +2,14 @@ package utils
 
 import (
 	"athena/log"
+	"crypto/sha256"
 	"errors"
 	uuid "github.com/satori/go.uuid"
 	"math/rand"
+	"strconv"
 	"strings"
 	//"strings"
+	"fmt"
 	"time"
 )
 
@@ -112,4 +115,17 @@ func Rid() string {
 		id += v
 	}
 	return id
+}
+
+//生产用户密码盐
+func NewPwdSalt(id string, retime int) string {
+	return Hash256(id, strconv.Itoa(retime))
+}
+
+func Hash256(pwd, salt string) string {
+	s := pwd + salt
+	h := sha256.New()
+	h.Write([]byte(s))
+	hs := h.Sum(nil)
+	return fmt.Sprintf("%x", hs)
 }

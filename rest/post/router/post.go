@@ -32,7 +32,7 @@ func (o *rObject) Set(r *gin.Engine, auth gin.HandlerFunc) {
 		router.GET("/:id/comment", func(context *gin.Context) {})
 		router.DELETE("/:id/comment/:commentId", func(context *gin.Context) {})
 		router.POST("/:id/comment/:commentId/flower", func(context *gin.Context) {}) //点赞
-		router.POST("/:id/comment:commentId/egg", func(context *gin.Context) {})     //丢鸡蛋
+		router.POST("/:id/comment/:commentId/egg", func(context *gin.Context) {})    //丢鸡蛋
 	}
 
 }

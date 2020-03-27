@@ -1,6 +1,7 @@
 package router
 
 import (
+	"athena/rest/user/handler"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,9 +23,9 @@ func (o *rObject) authRouter(r *gin.Engine) {
 	router := r.Group("/auth")
 	{
 		//登录
-		router.POST("/login")
+		router.POST("/login", handler.LoginHandler)
 		//注册
-		router.POST("/register")
+		router.POST("/:namespace/register", handler.RegisterHandler)
 		//忘记密码
 		router.POST("/forget-password")
 		//重设密码
@@ -39,10 +40,10 @@ func (o *rObject) userRouter(r *gin.Engine) {
 	router := r.Group("/user")
 	{
 		//vip等级增删改查
-		router.POST("/vip")
-		router.PUT("/vip")
-		router.DELETE("/vip")
-		router.GET("/vip")
+		router.POST("/vip-Grade")
+		router.PUT("/vip-Grade")
+		router.DELETE("/vip-Grade")
+		router.GET("/vip-Grade")
 	}
 
 }

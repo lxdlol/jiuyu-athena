@@ -2,12 +2,11 @@ package models
 
 import (
 	"athena/db"
-	"crypto/sha256"
-	"fmt"
 	"gopkg.in/mgo.v2/bson"
-	"strconv"
 	"time"
 )
+
+var TeamChan = make(chan User, 1000)
 
 type Level struct {
 	Name  string `json:"name" bson:"name"`   //等级名称
@@ -32,26 +31,14 @@ type User struct {
 }
 
 type Team struct {
-	User    User
-	Members []User
+	Owner   User
+	Members []Member
 }
 
 type Member struct {
-	User  User
+	Uid   string
 	Level int64
-}
-
-//生产用户密码盐
-func NewPwdSalt(id string, retime int) string {
-	return Hash256(id, strconv.Itoa(retime))
-}
-
-func Hash256(pwd, salt string) string {
-	s := pwd + salt
-	h := sha256.New()
-	h.Write([]byte(s))
-	hs := h.Sum(nil)
-	return fmt.Sprintf("%x", hs)
+	User  User
 }
 
 //条件查询

@@ -5,7 +5,7 @@ import (
 	_ "athena/docs"
 	post "athena/rest/post/router"
 	object "athena/rest/project/router"
-	user "athena/rest/user/router"
+	"athena/rest/user/router"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -28,7 +28,7 @@ func init() {
 		rSlice: []interface{}{
 			object.NewRouter(),
 			post.NewRouter(),
-			user.NewRouter(),
+			router.NewRouter(),
 		},
 	}
 }

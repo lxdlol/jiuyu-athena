@@ -2,13 +2,15 @@ package handler
 
 import (
 	"athena/common"
+	"athena/log"
 	"athena/models"
+	"athena/rest/middleware"
 	"athena/utils"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
 
-func Login(c *gin.Context) {
+func LoginHandler(c *gin.Context) {
 	var p UserParam
 	if e := c.ShouldBind(&p); e != nil {
 		common.GResp.Failure(c, common.CodeIllegalParam)
@@ -22,11 +24,28 @@ func Login(c *gin.Context) {
 		common.GResp.Failure(c, common.CodeUserError)
 		return
 	}
-
+	var auth models.Auth
+	auth.Username = p.UserName
+	filter, e := auth.FindByFilter("nick_name", auth.Username)
+	if e != nil {
+		common.GResp.Failure(c, common.CodeUserError)
+		return
+	}
+	Salt := utils.NewPwdSalt(auth.Uid, 1)
+	if filter.Password != utils.Hash256(p.PassWord, Salt) {
+		common.GResp.Failure(c, common.CodePasswordError)
+		return
+	}
+	ok, token := middleware.GenerateToken(auth)
+	if !ok {
+		common.GResp.Failure(c, common.CodeInternalServerError)
+		return
+	}
+	common.GResp.Success(c, gin.H{"token": token})
 }
 
 //注册
-func Register(c *gin.Context) {
+func RegisterHandler(c *gin.Context) {
 	var p UserParam
 	if e := c.ShouldBind(&p); e != nil {
 		common.GResp.Failure(c, common.CodeIllegalParam)
@@ -63,11 +82,27 @@ func Register(c *gin.Context) {
 		Follows:       0,
 		InviteCode:    "",
 	}
+	var auth models.Auth
+	Salt := utils.NewPwdSalt(user.Uid, 1)
+	pwd := utils.Hash256(p.PassWord, Salt)
+	auth = models.Auth{
+		Uid:      user.Uid,
+		Username: user.NickName,
+		Password: pwd,
+	}
+	if err := auth.Insert(); err != nil {
+		log.Log.Error(err)
+		common.GResp.Failure(c, common.CodeDbInsertError)
+		return
+	}
 	i, _ := strconv.Atoi(user.Uid)
 	user.InviteCode = utils.InviteCode.IdToCode(uint64(i))
 	if e := user.Insert(); e != nil {
+		log.Log.Error(e)
 		common.GResp.Failure(c, common.CodeIsExist)
 		return
 	}
+	//异步计算团队
+	models.TeamChan <- user
 	common.GResp.Success(c, nil)
 }
