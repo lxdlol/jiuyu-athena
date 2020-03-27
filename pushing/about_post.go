@@ -9,7 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"gopkg.in/mgo.v2/bson"
-	"strconv"
 )
 
 /*
@@ -169,23 +168,22 @@ func UpdatePostComment(c *gin.Context) {
 
 		action          = c.PostForm("action")
 		fabulous_action = c.PostForm("fabulous_action")
-		comment_id_str  = c.PostForm("comment_id")
-		comment_id, _   = strconv.Atoi(comment_id_str)
+		comment_id      = c.PostForm("comment_id")
 		news_id         = c.PostForm("news_id")
 	)
 
 	switch action {
 	case "delete":
 		Select(conn, news_id, &p)
-		err = CommentAddOrReduce(conn, p, "-", models.Comment{CId: comment_id})
+		err = CommentAddOrReduce(conn, p, "-", models.Comment{Id: bson.ObjectIdHex(comment_id)})
 		err_msg = "文章评论(删除)  出现错误"
 	case "fabulous":
 		Select(conn, news_id, &p)
-		err = FabulousAddOrReduce(conn, p, fabulous_action, models.Comment{CId: comment_id})
+		err = FabulousAddOrReduce(conn, p, fabulous_action, models.Comment{Id: bson.ObjectIdHex(comment_id)})
 		err_msg = "文章评论(点赞)  出现错误"
 	case "step_on":
 		Select(conn, news_id, &p)
-		err = StepOnAddOrReduce(conn, p, fabulous_action, models.Comment{CId: comment_id})
+		err = StepOnAddOrReduce(conn, p, fabulous_action, models.Comment{Id: bson.ObjectIdHex(comment_id)})
 		err_msg = "文章评论(踩)  出现错误"
 	}
 	mgo.Close()

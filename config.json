@@ -2,11 +2,11 @@
   "runMode":"dev",
   "dataSource": {
     "driverName": "mongodb",
-    "host": "127.0.0.1",
-    "port": 27071,
+    "host": "192.168.8.126",
+    "port": 27017,
     "database": "athena",
-    "user": "root",
-    "password": ""
+    "user": "admin",
+    "password": "1025"
   },
   "kafka": {
     "brokers": [

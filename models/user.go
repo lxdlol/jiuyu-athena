@@ -26,12 +26,19 @@ type User struct {
 	IsMaster      bool   `json:"is_master" bson:"is_master"`           //是否是大咖
 	MasterRanking int64  `json:"master_ranking" bson:"master_ranking"` //大咖指数
 	Follows       int64  `json:"follows" bson:"follows"`               //关注数
-	InviteCode    string `json:"invite_code" bson:"invite_code"`       //邀请码
+	InviteCode    string `json:"invite_code" bson:"invite_code"`       //邀请码,
+	ParentId      string `json:"parent_id"`
+	IsStaff       bool   `json:"is_staff" bson:"is_staff"` //是否后台账户
 }
 
 type Team struct {
-	User    User   `json:"uid" bson:"uid"`         //用户id
-	Members []User `json:"members" bson:"members"` //推荐人id
+	User    User
+	Members []User
+}
+
+type Member struct {
+	User  User
+	Level int64
 }
 
 //生产用户密码盐
