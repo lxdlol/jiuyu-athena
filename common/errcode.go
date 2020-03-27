@@ -12,15 +12,3 @@ var ErrCodeMap = map[int]string{
 	10002: "用户名不合法",
 	10003: "推荐吗错误",
 }
-
-func ErrCode(code int) *ResponseData {
-	return &ResponseData{
-		Code: code,
-		Msg:  ErrCodeMap[code],
-	}
-}
-
-func GetMessage(code int) string {
-	msg := ErrCodeMap[code]
-	return msg
-}
