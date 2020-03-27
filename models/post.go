@@ -11,10 +11,20 @@ import (
 )
 
 type PostType int32
+type PostEventType int32
 
 const (
-	Message PostType = 0
-	Event   PostType = 1
+	Message PostType = 0 //用户发布的消息
+	Event   PostType = 1 //系统发布(推送)的消息
+)
+const (
+	UploadReport      PostEventType = 0 //上传报告
+	AddReportComment  PostEventType = 1 //添加
+	AddProject        PostEventType = 2 //系统发布(推送)的消息
+	AddProjectComment PostEventType = 3 //项目评论
+	NewMaster         PostEventType = 4 //晋升大咖
+	NewGuru           PostEventType = 5 //晋升达人
+
 )
 
 type Topic struct {
@@ -27,18 +37,20 @@ type Topic struct {
 	UpdatedAt time.Time `json:"updated_at" bson:"updated_at"` //required
 }
 
+//文章,博客,动态
 /*
-文章,博客,动态
-*/
+
+ */
 type Post struct {
-	Id       bson.ObjectId `json:"id" bson:"_id"`
-	Type     PostType      `json:"type" bson:'type'` //1.message, 2.event
-	Images   []string      `json:"images" bson:"images"`
-	Content  string        `json:"content" bson:"content"`   //required
-	Comments []Comment     `json:"comments" bson:"comments"` //评论
-	Topic    Topic         `json:"topic" bson:"topic"`       //required
-	Tags     []string      `json:"tags" bson:"tags"`
-	User     User          `json:"user" bson:"user"` //required,发布人
+	Id          bson.ObjectId     `json:"id" bson:"_id"`
+	Type        PostType          `json:"type" bson:'type'`                 //1.message, 2.event
+	EventParams map[string]string `json:"event_params" bson:"event_params"` //当type=event 时，这里的不空,保存着一些显示的字典数据
+	Images      []string          `json:"images" bson:"images"`
+	Content     string            `json:"content" bson:"content"`   //required
+	Comments    []Comment         `json:"comments" bson:"comments"` //评论
+	Topic       Topic             `json:"topic" bson:"topic"`       //required
+	Tags        []string          `json:"tags" bson:"tags"`
+	User        User              `json:"user" bson:"user"` //required,发布人
 
 	Views   int64 `json:"views" bson:"views"`     //阅读数
 	Flowers int64 `json:"flowers" bson:"flowers"` //鲜花数
@@ -50,12 +62,10 @@ type Post struct {
 }
 
 type Comment struct {
-	Content string `json:"content" bson:"content"`
-	User    User   `json:"user" bson:"user"`
-
-	Flowers int64 `json:"flowers" bson:"flowers"` //鲜花数
-	Eggs    int64 `json:"eggs" bson:"eggs"`       //鸡蛋数
-
+	Content   string    `json:"content" bson:"content"`
+	User      User      `json:"user" bson:"user"`
+	Flowers   int64     `json:"flowers" bson:"flowers"` //鲜花数
+	Eggs      int64     `json:"eggs" bson:"eggs"`       //鸡蛋数
 	CreatedAt time.Time `json:"created_at" bson:"created_at"`
 }
 
