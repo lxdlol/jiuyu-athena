@@ -1,7 +1,3 @@
-/*
-
-
- */
 package models
 
 import (
@@ -11,7 +7,7 @@ import (
 )
 
 type PostType int32
-type PostEventType int32
+type PostEventType int32 //kafka消息类型
 
 const (
 	Message PostType = 0
@@ -20,7 +16,7 @@ const (
 
 const (
 	UploadReport      PostEventType = 0 //上传报告
-	AddReportComment  PostEventType = 1 //添加
+	AddReportComment  PostEventType = 1 //报告新评论
 	AddProject        PostEventType = 2 //系统发布(推送)的消息
 	AddProjectComment PostEventType = 3 //项目评论
 	NewMaster         PostEventType = 4 //晋升大咖
@@ -43,7 +39,7 @@ type Topic struct {
 */
 type Post struct {
 	Id       bson.ObjectId `json:"id" bson:"_id"`
-	Type     PostType      `json:"type" bson:'type'` //1.message, 2.event
+	Type     PostType      `json:"type" bson:"type"` //1.message, 2.event
 	Images   []string      `json:"images" bson:"images"`
 	Content  string        `json:"content" bson:"content"`   //required
 	Comments []Comment     `json:"comments" bson:"comments"` //评论
@@ -91,41 +87,54 @@ func InsertPost(post Post) error {
 	err := c.Insert(post)
 	return err
 }
-
-func DeletePost(post Post) error {
+func ListPostByUserId(userId string, pageSize int64, page int64) error {
+	_, c := db.Connect("post")
+	_ = c.Find(bson.M{"user._id": userId})
 	return nil
 }
+func ListPost(topic Topic, pageSize, page int64) (error, []Post) {
+	var posts []Post
+	_, c := db.Connect("post")
+	_ = c.Find(bson.M{"$sort": "-updated_at"})
+	return nil, posts
+}
 
-func (c *Post) Update() error {
+func DeletePost(id string) error {
+	_, c := db.Connect("post")
+	return c.RemoveId(id)
+}
+
+func (c *Post) Update(update interface{}) error {
 	_, collect := db.Connect("post")
 	err := collect.UpdateId(c.Id, c)
 	return err
 }
 func (c *Post) InsertComment(comment Comment) error {
-	comments := append(c.Comments, comment)
-	c.Comments = comments
-	return c.Update()
+	return c.Update(bson.M{"$push": bson.M{"comments": comment}})
+}
+
+func (c *Post) DeleteComment(comment Comment) error {
+	return c.Update(bson.M{"$pop": bson.M{"comments": comment}})
 }
 
 /*
 丢鸡蛋
 */
 func (c *Post) DoEgg() error {
-	c.Eggs = c.Eggs + 1
-	return c.Update()
+	return c.Update(bson.M{"$inc": "eggs"})
 }
 
 /*
 点赞
 */
 func (c *Post) DoFlower() error {
-	c.Flowers = c.Flowers + 1
-	return c.Update()
+	return c.Update(bson.M{"$inc": "flowers"})
 }
 
+//阅读数
 func (c *Post) DoView() error {
 	c.Views = c.Views + 1
-	return c.Update()
+	return c.Update(bson.M{"$inc": "views"})
 }
 
 /*

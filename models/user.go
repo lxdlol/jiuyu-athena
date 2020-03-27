@@ -27,6 +27,11 @@ type User struct {
 	InviteCode    string `json:"invite_code" bson:"invite_code"`       //邀请码
 }
 
+type Group struct {
+	User    User
+	Members []User
+}
+
 //生产用户密码盐
 func NewPwdSalt(id string, retime int) string {
 	return Hash256(id, strconv.Itoa(retime))
