@@ -29,9 +29,9 @@ type User struct {
 	InviteCode    string `json:"invite_code" bson:"invite_code"`       //邀请码
 }
 
-type Group struct {
-	User    User
-	Members []User
+type Team struct {
+	User    User   `json:"uid" bson:"uid"`         //用户id
+	Members []User `json:"members" bson:"members"` //推荐人id
 }
 
 //生产用户密码盐
