@@ -173,6 +173,8 @@
         }
     },
     "definitions": {
+<<<<<<< HEAD
+=======
         "handler.APIError": {
             "type": "object",
             "properties": {
@@ -184,6 +186,7 @@
                 }
             }
         },
+>>>>>>> 8d4998cc3ed99a2fdda984c38643d67fc6e4a339
         "post.APIError": {
             "type": "object",
             "properties": {
