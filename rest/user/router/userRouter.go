@@ -1,4 +1,4 @@
-package router
+package rest
 
 import (
 	"athena/rest/user/handler"
