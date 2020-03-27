@@ -29,6 +29,12 @@ const (
 
 	// CodeIllegalPwdLength 请求参数必需要有token
 	CodeIllegalPwdLength StatusCode = 10001
+	//
+	CodeUserError StatusCode = 10002
+	//
+	CodeRCodeError StatusCode = 10003
+	//用户名已存在
+	CodeIsExist StatusCode = 10004
 )
 
 // Error 实现error接口
@@ -58,5 +64,7 @@ func init() {
 		CodeAuthLogin:           "未授权，需登录",
 		CodeAuth:                "没有访问权限",
 		CodeIllegalPwdLength:    "密码长度错误",
+		CodeUserError:           "用户名错误",
+		CodeIsExist:             "用户名已存在",
 	}
 }
