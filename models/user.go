@@ -28,6 +28,7 @@ type User struct {
 	Follows       int64  `json:"follows" bson:"follows"`               //关注数
 	InviteCode    string `json:"invite_code" bson:"invite_code"`       //邀请码,
 	ParentId      string `json:"parent_id"`
+	IsStaff       bool   `json:"is_staff" bson:"is_staff"` //是否后台账户
 }
 
 type Team struct {
