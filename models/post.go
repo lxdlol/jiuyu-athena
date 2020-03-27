@@ -1,7 +1,6 @@
 package models
 
 import (
-	"athena/db"
 	"gopkg.in/mgo.v2/bson"
 	"time"
 )
@@ -38,14 +37,14 @@ type Topic struct {
 文章,博客,动态
 */
 type Post struct {
-	Id       bson.ObjectId `json:"id" bson:"_id"`
+	Id       bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Type     PostType      `json:"type" bson:"type"` //1.message, 2.event
 	Images   []string      `json:"images" bson:"images"`
-	Content  string        `json:"content" bson:"content"`   //required
-	Comments []Comment     `json:"comments" bson:"comments"` //评论
-	Topic    Topic         `json:"topic" bson:"topic"`       //required
+	Content  string        `json:"content" bson:"content"`       //required
+	Comments []Comment     `json:"comments" bson:"comments"`     //评论
+	Topic    Topic         `json:"topic" bson:"topic,omitempty"` //required
 	Tags     []string      `json:"tags" bson:"tags"`
-	User     User          `json:"user" bson:"user"` //required,发布人
+	User     User          `json:"user" bson:"user,omitempty"` //required,发布人
 
 	Views   int64 `json:"views" bson:"views"`     //阅读数
 	Flowers int64 `json:"flowers" bson:"flowers"` //鲜花数
@@ -60,7 +59,7 @@ type Post struct {
 type Comment struct {
 	Id        bson.ObjectId `json:"id" bson:"id"`
 	Content   string        `json:"content" bson:"content"`
-	User      User          `json:"user" bson:"user"`
+	User      User          `json:"user" bson:"user,omitempty"`
 	Flowers   int64         `json:"flowers" bson:"flowers"` //鲜花数
 	Eggs      int64         `json:"eggs" bson:"eggs"`       //鸡蛋数
 	CreatedAt time.Time     `json:"created_at" bson:"created_at"`
@@ -80,69 +79,6 @@ type Gallery struct {
 	Group    GalleyGroup `json:"group" bson:"group"`
 	Name     string      `json:"name" bson:"name"`
 	FilePath string      `json:"file_path" bson:"file_path"`
-}
-
-func InsertPost(post Post) error {
-	_, c := db.Connect("post")
-	err := c.Insert(post)
-	return err
-}
-func ListPostByUserId(userId string, pageSize int64, page int64) error {
-	_, c := db.Connect("post")
-	_ = c.Find(bson.M{"user._id": userId})
-	return nil
-}
-func ListPost(topic Topic, pageSize, page int64) (error, []Post) {
-	var posts []Post
-	_, c := db.Connect("post")
-	_ = c.Find(bson.M{"$sort": "-updated_at"})
-	return nil, posts
-}
-
-func DeletePost(id string) error {
-	_, c := db.Connect("post")
-	return c.RemoveId(id)
-}
-
-func (c *Post) Update(update interface{}) error {
-	_, collect := db.Connect("post")
-	err := collect.UpdateId(c.Id, c)
-	return err
-}
-func (c *Post) InsertComment(comment Comment) error {
-	return c.Update(bson.M{"$push": bson.M{"comments": comment}})
-}
-
-func (c *Post) DeleteComment(comment Comment) error {
-	return c.Update(bson.M{"$pop": bson.M{"comments": comment}})
-}
-
-/*
-丢鸡蛋
-*/
-func (c *Post) DoEgg() error {
-	return c.Update(bson.M{"$inc": "eggs"})
-}
-
-/*
-点赞
-*/
-func (c *Post) DoFlower() error {
-	return c.Update(bson.M{"$inc": "flowers"})
-}
-
-//阅读数
-func (c *Post) DoView() error {
-	c.Views = c.Views + 1
-	return c.Update(bson.M{"$inc": "views"})
-}
-
-/*
-	用户是否有查看权限
-*/
-
-func (c *Post) HasViewPermission(user User) (error, bool) {
-	return nil, true
 }
 
 /*
