@@ -1,30 +1,48 @@
 package router
 
 import (
-	"athena/rest"
-	"github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/gin-gonic/gin"
 )
 
-func swaggerRouter() {
-	router := rest.InitRouter()
-	router.GET("api/v1/auth/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+// rObject
+type rObject struct{}
+
+// NewRouter 初始化项目路由
+func NewRouter() *rObject {
+	return new(rObject)
 }
 
-func authRouter() {
-	router := rest.InitRouter()
-	//登录
-	router.POST("")
-	//注册
-	router.POST("")
-	//忘记密码
-	router.POST("")
-	//重设密码
-	router.POST("")
-	//退出登录
-	router.POST("")
+// SetObjectRouter 设置项目路由
+func (o *rObject) Set(r *gin.Engine, auth gin.HandlerFunc) {
+	o.authRouter(r)
+	o.userRouter(r)
 }
 
-func userRouter() {
+func (o *rObject) authRouter(r *gin.Engine) {
+	router := r.Group("/auth")
+	{
+		//登录
+		router.POST("/login")
+		//注册
+		router.POST("/register")
+		//忘记密码
+		router.POST("/forget-password")
+		//重设密码
+		router.POST("/reset-password")
+		//退出登录
+		router.POST("/exit")
+	}
+
+}
+
+func (o *rObject) userRouter(r *gin.Engine) {
+	router := r.Group("/user")
+	{
+		//vip等级增删改查
+		router.POST("/vip")
+		router.PUT("/vip")
+		router.DELETE("/vip")
+		router.GET("/vip")
+	}
 
 }

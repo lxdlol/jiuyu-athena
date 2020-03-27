@@ -1,5 +1,12 @@
 basePath: /v2
 definitions:
+  handler.APIError:
+    properties:
+      errorCode:
+        type: integer
+      errorMessage:
+        type: string
+    type: object
   post.APIError:
     properties:
       errorCode:
@@ -21,6 +28,27 @@ info:
   title: 币监汇
   version: "1.0"
 paths:
+  /index:
+    get:
+      consumes:
+      - application/json
+      description: get string by ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: We need ID!!
+          schema:
+            $ref: '#/definitions/handler.APIError'
+        "404":
+          description: Can not find ID
+          schema:
+            $ref: '#/definitions/handler.APIError'
+      summary: 获取首页
   /post:
     get:
       consumes:
